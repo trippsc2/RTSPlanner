@@ -17,4 +17,13 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\..\roslyn\RTSPlanner.Notify\RTSPlanner.Notify.csproj"
+                      OutputItemType="Analyzer" 
+                      ReferenceOutputAssembly="true" />
+    <ProjectReference Include="..\..\roslyn\RTSPlanner.Notify.Roslyn\RTSPlanner.Notify.Roslyn.csproj"
+                      OutputItemType="Analyzer"
+                      ReferenceOutputAssembly="false" />
+  </ItemGroup>
 </Project>
