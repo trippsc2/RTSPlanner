@@ -26,4 +26,8 @@
                       OutputItemType="Analyzer"
                       ReferenceOutputAssembly="false" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="Events\" />
+  </ItemGroup>
 </Project>

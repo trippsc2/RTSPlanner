@@ -28,21 +28,16 @@ public partial class Resource
     /// <param name="minimum">
     /// An <see cref="int"/> representing the minimum amount of the resource that can be stored.
     /// </param>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown when the maximum amount of the resource that can be stored is less than or equal to the minimum amount.
+    /// Thrown when the starting amount of the resource is less than the minimum amount.
+    /// Thrown when the starting amount of the resource is greater than the maximum amount.
+    /// </exception>
     public Resource(int maximum = int.MaxValue, int starting = 0, int minimum = 0)
     {
-        if (maximum <= minimum)
-        {
-            throw new ArgumentException(
-                "The maximum amount of the resource must be greater than the minimum amount of the resource.",
-                nameof(maximum));
-        }
-        
-        if (starting < minimum || starting > maximum)
-        {
-            throw new ArgumentException(
-                "The starting amount of the resource must be greater than or equal to the minimum amount of the resource and less than or equal to the maximum amount of the resource.",
-                nameof(starting));
-        }
+        ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(maximum, minimum);
+        ArgumentOutOfRangeException.ThrowIfLessThan(starting, minimum);
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(starting, maximum);
         
         _maximum = maximum;
         _minimum = minimum;
@@ -78,17 +73,12 @@ public partial class Resource
     /// <returns>
     /// A <see cref="bool"/> representing whether the resource can be added to without exceeding the maximum.
     /// </returns>
-    /// <exception cref="ArgumentException">
+    /// <exception cref="ArgumentOutOfRangeException">
     /// Thrown when the amount of the resource to add is less than zero.
     /// </exception>
     public bool CanAddWithoutExceedingMaximum(int amount)
     {
-        if (amount < 0)
-        {
-            throw new ArgumentException(
-                "The amount of the resource to add must be greater than or equal to zero.",
-                nameof(amount));
-        }
+        ArgumentOutOfRangeException.ThrowIfNegative(amount);
         
         return Current + amount <= _maximum;
     }
@@ -99,17 +89,12 @@ public partial class Resource
     /// <param name="amount">
     /// An <see cref="int"/> representing the amount of the resource to add.
     /// </param>
-    /// <exception cref="ArgumentException">
+    /// <exception cref="ArgumentOutOfRangeException">
     /// Thrown when the amount of the resource to add is less than zero.
     /// </exception>
     public void Add(int amount)
     {
-        if (amount < 0)
-        {
-            throw new ArgumentException(
-                "The amount of the resource to add must be greater than or equal to zero.",
-                nameof(amount));
-        }
+        ArgumentOutOfRangeException.ThrowIfNegative(amount);
         
         Current = Math.Min(_maximum, Current + amount);
     }
@@ -123,17 +108,12 @@ public partial class Resource
     /// <returns>
     /// A <see cref="bool"/> representing whether the resource can be spent.
     /// </returns>
-    /// <exception cref="ArgumentException">
+    /// <exception cref="ArgumentOutOfRangeException">
     /// Thrown when the amount of the resource to spend is less than zero.
     /// </exception>
     public bool CanSpend(int amount)
     {
-        if (amount < 0)
-        {
-            throw new ArgumentException(
-                "The amount of the resource to spend must be greater than or equal to zero.",
-                nameof(amount));
-        }
+        ArgumentOutOfRangeException.ThrowIfNegative(amount);
         
         return Current - amount >= _minimum;
     }
@@ -144,17 +124,12 @@ public partial class Resource
     /// <param name="amount">
     /// An <see cref="int"/> representing the amount of the resource to spend.
     /// </param>
-    /// <exception cref="ArgumentException">
+    /// <exception cref="ArgumentOutOfRangeException">
     /// Thrown when the amount of the resource to spend is less than zero.
     /// </exception>
     public void Spend(int amount)
     {
-        if (amount < 0)
-        {
-            throw new ArgumentException(
-                "The amount of the resource to spend must be greater than or equal to zero.",
-                nameof(amount));
-        }
+        ArgumentOutOfRangeException.ThrowIfNegative(amount);
         
         Current = Math.Max(_minimum, Current - amount); 
     }
