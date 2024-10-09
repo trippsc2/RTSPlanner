@@ -11,7 +11,6 @@ using Microsoft.CodeAnalysis.CSharp.Testing;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Testing;
 using Microsoft.CodeAnalysis.Text;
-using RTSPlanner.Roslyn.Common.Notify;
 
 namespace RTSPlanner.Roslyn.UnitTests;
 
@@ -103,7 +102,6 @@ public sealed class AnalyzerTest<TAnalyzer> : CSharpAnalyzerTest<TAnalyzer, Defa
             TestState =
             {
                 Sources = { source },
-                AdditionalReferences = { typeof(NotifyingPropertyAttribute).Assembly },
                 ReferenceAssemblies = ReferenceAssemblies.Net.Net80
             },
             ReferenceAssemblies = ReferenceAssemblies.Net.Net80

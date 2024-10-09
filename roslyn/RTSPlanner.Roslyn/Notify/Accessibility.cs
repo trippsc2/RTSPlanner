@@ -1,9 +1,9 @@
-namespace RTSPlanner.Roslyn.Common.Notify;
+namespace RTSPlanner.Roslyn.Notify;
 
 /// <summary>
 /// Specifies the access modifier of a property getter or setter.
 /// </summary>
-public enum Accessibility
+internal enum Accessibility
 {
     /// <summary>
     /// The getter or setter is accessible to all objects.

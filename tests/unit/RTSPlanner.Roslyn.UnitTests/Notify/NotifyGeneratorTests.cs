@@ -14,7 +14,7 @@ public sealed class NotifyGeneratorTests
         // lang=cs
         const string source =
             $$"""
-              using RTSPlanner.Roslyn.Common.Notify;
+              using RTSPlanner.Roslyn.Notify;
 
               namespace TestProject;
               
@@ -77,6 +77,9 @@ public sealed class NotifyGeneratorTests
         await GeneratorTest<NotifyGenerator>
             .VerifyGeneratorAsync(
                 source,
+                (NotifyGenerator.NotifyingObjectAttributeHintName, NotifyGenerator.NotifyingObjectAttributeCode),
+                (NotifyGenerator.AccessibilityHintName, NotifyGenerator.AccessibilityCode),
+                (NotifyGenerator.NotifyingPropertyAttributeHintName, NotifyGenerator.NotifyingPropertyAttributeCode),
                 ("TestProject.TestClass.Notify.g.cs", expectedGeneratedCode));
     }
 
@@ -86,7 +89,7 @@ public sealed class NotifyGeneratorTests
         // lang=cs
         const string source =
             $$"""
-              using RTSPlanner.Roslyn.Common.Notify;
+              using RTSPlanner.Roslyn.Notify;
               
               namespace TestProject;
               
@@ -149,6 +152,9 @@ public sealed class NotifyGeneratorTests
         await GeneratorTest<NotifyGenerator>
             .VerifyGeneratorAsync(
                 source,
+                (NotifyGenerator.NotifyingObjectAttributeHintName, NotifyGenerator.NotifyingObjectAttributeCode),
+                (NotifyGenerator.AccessibilityHintName, NotifyGenerator.AccessibilityCode),
+                (NotifyGenerator.NotifyingPropertyAttributeHintName, NotifyGenerator.NotifyingPropertyAttributeCode),
                 ("TestProject.TestClass.T.Notify.g.cs", expectedGeneratedCode));
     }
 }

@@ -28,8 +28,4 @@
     <AdditionalFiles Include="..\..\src\stylecop.json" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\RTSPlanner.Roslyn.Common\RTSPlanner.Roslyn.Common.csproj" />
-  </ItemGroup>
-
 </Project>

@@ -10,7 +10,6 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Testing;
 using Microsoft.CodeAnalysis.Testing;
 using Microsoft.CodeAnalysis.Text;
-using RTSPlanner.Roslyn.Common.Notify;
 
 namespace RTSPlanner.Roslyn.UnitTests;
 
@@ -102,7 +101,6 @@ public sealed class GeneratorTest<TSourceGenerator>
             TestState =
             {
                 Sources = { source },
-                AdditionalReferences = { typeof(NotifyingPropertyAttribute).Assembly },
                 ReferenceAssemblies = ReferenceAssemblies.Net
                     .Net80
             },

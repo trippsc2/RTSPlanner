@@ -2,23 +2,19 @@ using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using RTSPlanner.Roslyn.Common.Notify;
 using RTSPlanner.Roslyn.Semantic;
 using RTSPlanner.Roslyn.Syntactic;
-using Accessibility = RTSPlanner.Roslyn.Common.Notify.Accessibility;
 
 namespace RTSPlanner.Roslyn.Notify;
 
 /// <summary>
-/// Analyzes the use of the <see cref="NotifyingObjectAttribute"/> and <see cref="NotifyingPropertyAttribute"/>
-/// attributes.
+/// Analyzes the use of the NotifyingObjectAttribute and NotifyingPropertyAttribute attributes.
 /// </summary>
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 public sealed class NotifyAnalyzer : DiagnosticAnalyzer
 {
     /// <summary>
-    /// Gets a <see cref="DiagnosticDescriptor"/> for when the <see cref="NotifyingObjectAttribute"/> is used on a
-    /// non-partial type.
+    /// Gets a <see cref="DiagnosticDescriptor"/> for when the NotifyingObjectAttribute is used on a non-partial type.
     /// </summary>
     public static DiagnosticDescriptor NotifyingObjectNotPartialType { get; } = new(
         "RTSPlannerNotify001",
@@ -29,8 +25,7 @@ public sealed class NotifyAnalyzer : DiagnosticAnalyzer
         true);
     
     /// <summary>
-    /// Gets a <see cref="DiagnosticDescriptor"/> for when the <see cref="NotifyingObjectAttribute"/> is used on a
-    /// non-partial type.
+    /// Gets a <see cref="DiagnosticDescriptor"/> for when the NotifyingObjectAttribute is used on a non-partial type.
     /// </summary>
     public static DiagnosticDescriptor NotifyingObjectStaticType { get; } = new(
         "RTSPlannerNotify002",
@@ -41,8 +36,8 @@ public sealed class NotifyAnalyzer : DiagnosticAnalyzer
         true);
 
     /// <summary>
-    /// Gets a <see cref="DiagnosticDescriptor"/> for when the <see cref="NotifyingPropertyAttribute"/> is used outside
-    /// a class marked with <see cref="NotifyingObjectAttribute"/>.
+    /// Gets a <see cref="DiagnosticDescriptor"/> for when the NotifyingPropertyAttribute is used outside a class marked
+    /// with NotifyingObjectAttribute.
     /// </summary>
     public static DiagnosticDescriptor NotifyingPropertyOutsideOfNotifyingObject { get; } = new(
         "RTSPlannerNotify003",
@@ -53,9 +48,8 @@ public sealed class NotifyAnalyzer : DiagnosticAnalyzer
         true);
     
     /// <summary>
-    /// Gets a <see cref="DiagnosticDescriptor"/> for when the <see cref="NotifyingPropertyAttribute"/> is used with a
-    /// <see cref="NotifyingPropertyAttribute.SetterAccessibility"/> that is less accessible than the
-    /// <see cref="NotifyingPropertyAttribute.GetterAccessibility"/>.
+    /// Gets a <see cref="DiagnosticDescriptor"/> for when the NotifyingPropertyAttribute is used with a
+    /// SetterAccessibility that is less accessible than the GetterAccessibility.
     /// </summary>
     public static DiagnosticDescriptor NotifyingPropertySetterLessAccessibleThanGetter { get; } = new(
         "RTSPlannerNotify004",
@@ -66,8 +60,8 @@ public sealed class NotifyAnalyzer : DiagnosticAnalyzer
         true);
     
     /// <summary>
-    /// Gets a <see cref="DiagnosticDescriptor"/> for when the field marked with <see cref="NotifyingPropertyAttribute"/>
-    /// is not prefixed with an underscore.
+    /// Gets a <see cref="DiagnosticDescriptor"/> for when the field marked with NotifyingPropertyAttribute is not
+    /// prefixed with an underscore.
     /// </summary>
     public static DiagnosticDescriptor NotifyingFieldNameMustStartWithUnderscore { get; } = new(
         "RTSPlannerNotify005",
@@ -103,8 +97,8 @@ public sealed class NotifyAnalyzer : DiagnosticAnalyzer
         if (!context.Symbol
                 .HasAttribute(
                     out var attribute,
-                    nameof(NotifyingObjectAttribute),
-                    typeof(NotifyingObjectAttribute).Namespace))
+                    "NotifyingObjectAttribute",
+                    "RTSPlanner.Roslyn.Notify"))
         {
             return;
         }
@@ -145,8 +139,8 @@ public sealed class NotifyAnalyzer : DiagnosticAnalyzer
         if (!context.Symbol
                 .HasAttribute(
                     out var attribute,
-                    nameof(NotifyingPropertyAttribute),
-                    typeof(NotifyingPropertyAttribute).Namespace))
+                    "NotifyingPropertyAttribute",
+                    "RTSPlanner.Roslyn.Notify"))
         {
             return;
         }
@@ -158,8 +152,8 @@ public sealed class NotifyAnalyzer : DiagnosticAnalyzer
         if (!context.Symbol.ContainingType
                 .HasAttribute(
                     out _,
-                    nameof(NotifyingObjectAttribute),
-                    typeof(NotifyingObjectAttribute).Namespace))
+                    "NotifyingObjectAttribute",
+                    "RTSPlanner.Roslyn.Notify"))
         {
             context.ReportDiagnostic(
                 Diagnostic.Create(
@@ -170,10 +164,10 @@ public sealed class NotifyAnalyzer : DiagnosticAnalyzer
         }
 
         var getterAccessibility = attribute.GetNamedArgumentValueType<Accessibility>(
-            nameof(NotifyingPropertyAttribute.GetterAccessibility),
+            "GetterAccessibility",
             Accessibility.Public)!.Value;
         var setterAccessibility = attribute.GetNamedArgumentValueType<Accessibility>(
-            nameof(NotifyingPropertyAttribute.SetterAccessibility),
+            "SetterAccessibility",
             getterAccessibility)!.Value;
 
         if (setterAccessibility < getterAccessibility ||

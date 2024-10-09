@@ -1,7 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.Testing;
-using RTSPlanner.Roslyn.Common.Notify;
 using RTSPlanner.Roslyn.Notify;
 using Xunit;
 
@@ -16,15 +15,42 @@ public sealed class NotifyAnalyzerTests
         // lang=cs
         const string source =
             """
-            using RTSPlanner.Roslyn.Common.Notify;
+            using System;
+            using RTSPlanner.Roslyn.Notify;
             
-            namespace TestProject;
-            
-            [NotifyingObject]
-            public partial class TestClass
+            namespace RTSPlanner.Roslyn.Notify
             {
-                [NotifyingProperty]
-                private string _test;
+                internal enum Accessibility
+                {
+                    Public,
+                    ProtectedInternal,
+                    Protected,
+                    Internal,
+                    PrivateProtected,
+                    Private
+                }
+                
+                [AttributeUsage(AttributeTargets.Class)]
+                internal sealed class NotifyingObjectAttribute : Attribute
+                {
+                }
+                
+                [AttributeUsage(AttributeTargets.Field)]
+                internal sealed class NotifyingPropertyAttribute : Attribute
+                {
+                    public Accessibility GetterAccessibility { get; set; } = Accessibility.Public;
+                    public Accessibility SetterAccessibility { get; set; } = Accessibility.Public;
+                }
+            }
+            
+            namespace TestProject
+            {
+                [NotifyingObject]
+                public partial class TestClass
+                {
+                    [NotifyingProperty]
+                    private string _test;
+                }
             }
             """;
         
@@ -37,14 +63,41 @@ public sealed class NotifyAnalyzerTests
         // lang=cs
         const string source =
             """
-            using RTSPlanner.Roslyn.Common.Notify;
-
-            namespace TestProject;
-
-            [NotifyingObject]
-            public partial class TestClass
+            using System;
+            using RTSPlanner.Roslyn.Notify;
+            
+            namespace RTSPlanner.Roslyn.Notify
             {
-                private string _test;
+                internal enum Accessibility
+                {
+                    Public,
+                    ProtectedInternal,
+                    Protected,
+                    Internal,
+                    PrivateProtected,
+                    Private
+                }
+                
+                [AttributeUsage(AttributeTargets.Class)]
+                internal sealed class NotifyingObjectAttribute : Attribute
+                {
+                }
+                
+                [AttributeUsage(AttributeTargets.Field)]
+                internal sealed class NotifyingPropertyAttribute : Attribute
+                {
+                    public Accessibility GetterAccessibility { get; set; } = Accessibility.Public;
+                    public Accessibility SetterAccessibility { get; set; } = Accessibility.Public;
+                }
+            }
+            
+            namespace TestProject
+            {
+                [NotifyingObject]
+                public partial class TestClass
+                {
+                    private string _test;
+                }
             }
             """;
 
@@ -57,21 +110,48 @@ public sealed class NotifyAnalyzerTests
         // lang=cs
         const string source =
             """
-            using RTSPlanner.Roslyn.Common.Notify;
-
-            namespace TestProject;
-
-            public class TestClass
+            using System;
+            using RTSPlanner.Roslyn.Notify;
+            
+            namespace RTSPlanner.Roslyn.Notify
             {
-                [NotifyingProperty]
-                private string _test;
+                internal enum Accessibility
+                {
+                    Public,
+                    ProtectedInternal,
+                    Protected,
+                    Internal,
+                    PrivateProtected,
+                    Private
+                }
+                
+                [AttributeUsage(AttributeTargets.Class)]
+                internal sealed class NotifyingObjectAttribute : Attribute
+                {
+                }
+                
+                [AttributeUsage(AttributeTargets.Field)]
+                internal sealed class NotifyingPropertyAttribute : Attribute
+                {
+                    public Accessibility GetterAccessibility { get; set; } = Accessibility.Public;
+                    public Accessibility SetterAccessibility { get; set; } = Accessibility.Public;
+                }
+            }
+            
+            namespace TestProject
+            {
+                public class TestClass
+                {
+                    [NotifyingProperty]
+                    private string _test;
+                }
             }
             """;
         
         await AnalyzerTest<NotifyAnalyzer>.VerifyAnalyzerAsync(
             source,
             new DiagnosticResult(NotifyAnalyzer.NotifyingPropertyOutsideOfNotifyingObject)
-                .WithSpan(7, 6, 7, 23)
+                .WithSpan(33, 10, 33, 27)
                 .WithArguments("_test"));
     }
 
@@ -81,18 +161,45 @@ public sealed class NotifyAnalyzerTests
         // lang=cs
         const string source =
             """
-            using RTSPlanner.Roslyn.Common.Notify;
-
-            namespace TestProject;
-
-            [NotifyingObject]
-            public class TestClass;
+            using System;
+            using RTSPlanner.Roslyn.Notify;
+            
+            namespace RTSPlanner.Roslyn.Notify
+            {
+                internal enum Accessibility
+                {
+                    Public,
+                    ProtectedInternal,
+                    Protected,
+                    Internal,
+                    PrivateProtected,
+                    Private
+                }
+                
+                [AttributeUsage(AttributeTargets.Class)]
+                internal sealed class NotifyingObjectAttribute : Attribute
+                {
+                }
+                
+                [AttributeUsage(AttributeTargets.Field)]
+                internal sealed class NotifyingPropertyAttribute : Attribute
+                {
+                    public Accessibility GetterAccessibility { get; set; } = Accessibility.Public;
+                    public Accessibility SetterAccessibility { get; set; } = Accessibility.Public;
+                }
+            }
+            
+            namespace TestProject
+            {
+                [NotifyingObject]
+                public class TestClass;
+            }
             """;
 
         await AnalyzerTest<NotifyAnalyzer>.VerifyAnalyzerAsync(
             source,
             new DiagnosticResult(NotifyAnalyzer.NotifyingObjectNotPartialType)
-                .WithSpan(5, 2, 5, 17)
+                .WithSpan(31, 6, 31, 21)
                 .WithArguments("TestClass"));
     }
 
@@ -102,18 +209,45 @@ public sealed class NotifyAnalyzerTests
         // lang=cs
         const string source =
             """
-            using RTSPlanner.Roslyn.Common.Notify;
-
-            namespace TestProject;
-
-            [NotifyingObject]
-            public static partial class TestClass;
+            using System;
+            using RTSPlanner.Roslyn.Notify;
+            
+            namespace RTSPlanner.Roslyn.Notify
+            {
+                internal enum Accessibility
+                {
+                    Public,
+                    ProtectedInternal,
+                    Protected,
+                    Internal,
+                    PrivateProtected,
+                    Private
+                }
+                
+                [AttributeUsage(AttributeTargets.Class)]
+                internal sealed class NotifyingObjectAttribute : Attribute
+                {
+                }
+                
+                [AttributeUsage(AttributeTargets.Field)]
+                internal sealed class NotifyingPropertyAttribute : Attribute
+                {
+                    public Accessibility GetterAccessibility { get; set; } = Accessibility.Public;
+                    public Accessibility SetterAccessibility { get; set; } = Accessibility.Public;
+                }
+            }
+            
+            namespace TestProject
+            {
+                [NotifyingObject]
+                public static partial class TestClass;
+            }
             """;
 
         await AnalyzerTest<NotifyAnalyzer>.VerifyAnalyzerAsync(
             source,
             new DiagnosticResult(NotifyAnalyzer.NotifyingObjectStaticType)
-                .WithSpan(5, 2, 5, 17)
+                .WithSpan(31, 6, 31, 21)
                 .WithArguments("TestClass"));
     }
 
@@ -141,26 +275,53 @@ public sealed class NotifyAnalyzerTests
         // lang=cs
         var source =
             $$"""
-              using RTSPlanner.Roslyn.Common.Notify;
-
-              namespace TestProject;
-
-              [NotifyingObject]
-              public partial class TestClass
+              using System;
+              using RTSPlanner.Roslyn.Notify;
+              
+              namespace RTSPlanner.Roslyn.Notify
               {
-                  [NotifyingProperty(
-                      GetterAccessibility = Accessibility.{{getterAccessibility}},
-                      SetterAccessibility = Accessibility.{{setterAccessibility}})]
-                  private string _test;
+                  internal enum Accessibility
+                  {
+                      Public,
+                      ProtectedInternal,
+                      Protected,
+                      Internal,
+                      PrivateProtected,
+                      Private
+                  }
+                  
+                  [AttributeUsage(AttributeTargets.Class)]
+                  internal sealed class NotifyingObjectAttribute : Attribute
+                  {
+                  }
+                  
+                  [AttributeUsage(AttributeTargets.Field)]
+                  internal sealed class NotifyingPropertyAttribute : Attribute
+                  {
+                      public Accessibility GetterAccessibility { get; set; } = Accessibility.Public;
+                      public Accessibility SetterAccessibility { get; set; } = Accessibility.Public;
+                  }
+              }
+              
+              namespace TestProject
+              {
+                  [NotifyingObject]
+                  public partial class TestClass
+                  {
+                      [NotifyingProperty(
+                          GetterAccessibility = Accessibility.{{getterAccessibility}},
+                          SetterAccessibility = Accessibility.{{setterAccessibility}})]
+                      private string _test;
+                  }
               }
               """;
 
-        var endingCharacter = 46 + setterAccessibility.ToString().Length;
+        var endingCharacter = 50 + setterAccessibility.ToString().Length;
 
         await AnalyzerTest<NotifyAnalyzer>.VerifyAnalyzerAsync(
             source,
             new DiagnosticResult(NotifyAnalyzer.NotifyingPropertySetterLessAccessibleThanGetter)
-                .WithSpan(8, 6, 10, endingCharacter)
+                .WithSpan(34, 10, 36, endingCharacter)
                 .WithArguments("_test"));
     }
     
@@ -192,17 +353,44 @@ public sealed class NotifyAnalyzerTests
         // lang=cs
         var source =
             $$"""
-              using RTSPlanner.Roslyn.Common.Notify;
-
-              namespace TestProject;
-
-              [NotifyingObject]
-              public partial class TestClass
+              using System;
+              using RTSPlanner.Roslyn.Notify;
+              
+              namespace RTSPlanner.Roslyn.Notify
               {
-                  [NotifyingProperty(
-                      GetterAccessibility = Accessibility.{{getterAccessibility}},
-                      SetterAccessibility = Accessibility.{{setterAccessibility}})]
-                  private string _test;
+                  internal enum Accessibility
+                  {
+                      Public,
+                      ProtectedInternal,
+                      Protected,
+                      Internal,
+                      PrivateProtected,
+                      Private
+                  }
+                  
+                  [AttributeUsage(AttributeTargets.Class)]
+                  internal sealed class NotifyingObjectAttribute : Attribute
+                  {
+                  }
+                  
+                  [AttributeUsage(AttributeTargets.Field)]
+                  internal sealed class NotifyingPropertyAttribute : Attribute
+                  {
+                      public Accessibility GetterAccessibility { get; set; } = Accessibility.Public;
+                      public Accessibility SetterAccessibility { get; set; } = Accessibility.Public;
+                  }
+              }
+              
+              namespace TestProject
+              {
+                  [NotifyingObject]
+                  public partial class TestClass
+                  {
+                      [NotifyingProperty(
+                          GetterAccessibility = Accessibility.{{getterAccessibility}},
+                          SetterAccessibility = Accessibility.{{setterAccessibility}})]
+                      private string _test;
+                  }
               }
               """;
 
@@ -215,22 +403,49 @@ public sealed class NotifyAnalyzerTests
         // lang=cs
         const string source =
             """
-            using RTSPlanner.Roslyn.Common.Notify;
-
-            namespace TestProject;
-
-            [NotifyingObject]
-            public partial class TestClass
+            using System;
+            using RTSPlanner.Roslyn.Notify;
+            
+            namespace RTSPlanner.Roslyn.Notify
             {
-                [NotifyingProperty]
-                private string test;
+                internal enum Accessibility
+                {
+                    Public,
+                    ProtectedInternal,
+                    Protected,
+                    Internal,
+                    PrivateProtected,
+                    Private
+                }
+                
+                [AttributeUsage(AttributeTargets.Class)]
+                internal sealed class NotifyingObjectAttribute : Attribute
+                {
+                }
+                
+                [AttributeUsage(AttributeTargets.Field)]
+                internal sealed class NotifyingPropertyAttribute : Attribute
+                {
+                    public Accessibility GetterAccessibility { get; set; } = Accessibility.Public;
+                    public Accessibility SetterAccessibility { get; set; } = Accessibility.Public;
+                }
+            }
+            
+            namespace TestProject
+            {
+                [NotifyingObject]
+                public partial class TestClass
+                {
+                    [NotifyingProperty]
+                    private string test;
+                }
             }
             """;
         
         await AnalyzerTest<NotifyAnalyzer>.VerifyAnalyzerAsync(
             source,
             new DiagnosticResult(NotifyAnalyzer.NotifyingFieldNameMustStartWithUnderscore)
-                .WithSpan(8, 6, 8, 23)
+                .WithSpan(34, 10, 34, 27)
                 .WithArguments("test"));
     }
 }
