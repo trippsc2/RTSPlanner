@@ -1,6 +1,6 @@
 using Microsoft.CodeAnalysis;
 
-namespace RTSPlanner.Notify.Roslyn.Semantic;
+namespace RTSPlanner.Roslyn.Semantic;
 
 /// <summary>
 /// Extends <see cref="ITypeSymbol"/> with additional methods.

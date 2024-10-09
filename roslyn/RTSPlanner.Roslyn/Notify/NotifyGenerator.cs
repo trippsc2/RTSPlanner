@@ -8,11 +8,14 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using RTSPlanner.Notify.Roslyn.Data;
-using RTSPlanner.Notify.Roslyn.Semantic;
-using RTSPlanner.Notify.Roslyn.Syntactic;
+using RTSPlanner.Roslyn.Common.Notify;
+using RTSPlanner.Roslyn.Notify.Data;
+using RTSPlanner.Roslyn.Semantic;
+using RTSPlanner.Roslyn.Syntactic;
 
-namespace RTSPlanner.Notify.Roslyn;
+using Accessibility = RTSPlanner.Roslyn.Common.Notify.Accessibility;
+
+namespace RTSPlanner.Roslyn.Notify;
 
 /// <summary>
 /// Generates the source code to implement the <see cref="INotifyPropertyChanged"/> interface for classes marked with
@@ -218,7 +221,7 @@ public sealed class NotifyGenerator : IIncrementalGenerator
                      
                      {{property.PropertyAccessibilityKeywords}} {{property.TypeName}} {{property.PropertyName}}
                      {
-                         get => this.{{property.FieldName}};
+                         get => {{property.FieldName}};
                          {{setterAccessibilityKeywords}}set
                          {
                              if (global::System.Collections.Generic.EqualityComparer<{{property.TypeName}}>.Default.Equals({{property.FieldName}}, value))
@@ -226,7 +229,7 @@ public sealed class NotifyGenerator : IIncrementalGenerator
                                  return;
                              }
                              
-                             this.{{property.FieldName}} = value;
+                             {{property.FieldName}} = value;
                              this.PropertyChanged?.Invoke(this, new global::System.ComponentModel.PropertyChangedEventArgs("{{property.PropertyName}}"));
                          }
                      }

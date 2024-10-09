@@ -1,6 +1,6 @@
 using System;
 
-namespace RTSPlanner.Notify;
+namespace RTSPlanner.Roslyn.Common.Notify;
 
 /// <summary>
 /// An attribute that marks a class as a notifying object.

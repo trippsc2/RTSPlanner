@@ -8,19 +8,20 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Testing;
-using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Testing;
 using Microsoft.CodeAnalysis.Text;
+using RTSPlanner.Roslyn.Common.Notify;
 
-namespace RTSPlanner.Notify.UnitTests;
+namespace RTSPlanner.Roslyn.UnitTests;
 
 [ExcludeFromCodeCoverage]
-public sealed class AnalyzerTest<TAnalyzer> : CSharpAnalyzerTest<TAnalyzer, DefaultVerifier>
-    where TAnalyzer : DiagnosticAnalyzer, new()
+public sealed class GeneratorTest<TSourceGenerator>
+    : CSharpSourceGeneratorTest<EmptySourceGeneratorProvider, DefaultVerifier>
+    where TSourceGenerator : IIncrementalGenerator, new()
 {
     // ReSharper disable once StaticMemberInGenericType
     private static (string filename, string content)[] EmptyGeneratedSources { get; } = [];
-    
+
     public static DiagnosticResult Diagnostic()
     {
         return new DiagnosticResult();
@@ -36,90 +37,94 @@ public sealed class AnalyzerTest<TAnalyzer> : CSharpAnalyzerTest<TAnalyzer, Defa
         return new DiagnosticResult(descriptor);
     }
 
-    public static async Task VerifyAnalyzerAsync(string source)
+    public static async Task VerifyGeneratorAsync(string source)
     {
-        await VerifyAnalyzerAsync(source, DiagnosticResult.EmptyDiagnosticResults);
+        await VerifyGeneratorAsync(source, DiagnosticResult.EmptyDiagnosticResults, EmptyGeneratedSources);
     }
 
-    public static async Task VerifyAnalyzerAsync(string source, (string filename, string content) generatedSource)
+    public static async Task VerifyGeneratorAsync(string source, (string filename, string content) generatedSource)
     {
-        await VerifyAnalyzerAsync(
+        await VerifyGeneratorAsync(
             source,
             DiagnosticResult.EmptyDiagnosticResults,
             [generatedSource]);
     }
 
-    public static async Task VerifyAnalyzerAsync(
+    public static async Task VerifyGeneratorAsync(
         string source,
         params (string filename, string content)[] generatedSources)
     {
-        await VerifyAnalyzerAsync(source, DiagnosticResult.EmptyDiagnosticResults, generatedSources);
+        await VerifyGeneratorAsync(source, DiagnosticResult.EmptyDiagnosticResults, generatedSources);
     }
 
-    public static async Task VerifyAnalyzerAsync(string source, DiagnosticResult diagnostic)
+    public static async Task VerifyGeneratorAsync(string source, DiagnosticResult diagnostic)
     {
-        await VerifyAnalyzerAsync(source, new[] { diagnostic }, EmptyGeneratedSources);
+        await VerifyGeneratorAsync(source, new[] { diagnostic }, EmptyGeneratedSources);
     }
 
-    // ReSharper disable once MemberCanBePrivate.Global
-    public static async Task VerifyAnalyzerAsync(string source, params DiagnosticResult[] diagnostics)
+    public static async Task VerifyGeneratorAsync(string source, params DiagnosticResult[] diagnostics)
     {
-        await VerifyAnalyzerAsync(source, diagnostics, EmptyGeneratedSources);
+        await VerifyGeneratorAsync(source, diagnostics, EmptyGeneratedSources);
     }
 
-    public static async Task VerifyAnalyzerAsync(
+    public static async Task VerifyGeneratorAsync(
         string source,
         DiagnosticResult diagnostic,
         (string filename, string content) generatedSource)
     {
-        await VerifyAnalyzerAsync(source, new[] { diagnostic }, [generatedSource]);
+        await VerifyGeneratorAsync(source, new[] { diagnostic }, [generatedSource]);
     }
 
-    public static async Task VerifyAnalyzerAsync(
+    public static async Task VerifyGeneratorAsync(
         string source,
         IEnumerable<DiagnosticResult> diagnostics,
         (string filename, string content) generatedSource)
     {
-        await VerifyAnalyzerAsync(source, diagnostics, [generatedSource]);
+        await VerifyGeneratorAsync(source, diagnostics, [generatedSource]);
     }
 
-    public static async Task VerifyAnalyzerAsync(
+    public static async Task VerifyGeneratorAsync(
         string source,
         DiagnosticResult diagnostic,
         params (string filename, string content)[] generatedSources)
     {
-        await VerifyAnalyzerAsync(source, new[] { diagnostic }, generatedSources);
+        await VerifyGeneratorAsync(source, new[] { diagnostic }, generatedSources);
     }
 
     // ReSharper disable once MemberCanBePrivate.Global
-    public static async Task VerifyAnalyzerAsync(
+    public static async Task VerifyGeneratorAsync(
         string source,
         IEnumerable<DiagnosticResult> diagnostics,
         params (string filename, string content)[] generatedSources)
     {
-        var test = new AnalyzerTest<TAnalyzer>
+        var test = new GeneratorTest<TSourceGenerator>
         {
             TestState =
             {
                 Sources = { source },
                 AdditionalReferences = { typeof(NotifyingPropertyAttribute).Assembly },
-                ReferenceAssemblies = ReferenceAssemblies.Net.Net80
+                ReferenceAssemblies = ReferenceAssemblies.Net
+                    .Net80
             },
-            ReferenceAssemblies = ReferenceAssemblies.Net.Net80
+            ReferenceAssemblies = ReferenceAssemblies.Net
+                .Net80
         };
 
         foreach (var (filename, content) in generatedSources)
         {
-            test.TestState
-                .GeneratedSources
-                .Add((typeof(TAnalyzer), filename, SourceText.From(content, Encoding.UTF8)));
+            test.TestState.GeneratedSources.Add((typeof(TSourceGenerator), filename, SourceText.From(content, Encoding.UTF8)));
         }
 
         test.ExpectedDiagnostics.AddRange(diagnostics);
 
         await test.RunAsync(CancellationToken.None);
     }
-    
+
+    protected override IEnumerable<Type> GetSourceGenerators()
+    {
+        return new[] { typeof(TSourceGenerator) };
+    }
+
     protected override CompilationOptions CreateCompilationOptions()
     {
         var compilationOptions = base.CreateCompilationOptions();

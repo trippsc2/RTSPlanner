@@ -1,4 +1,4 @@
-namespace RTSPlanner.Notify.Roslyn.Data;
+namespace RTSPlanner.Roslyn.Notify.Data;
 
 /// <summary>
 /// Represents the data needed to generate a notifying property.

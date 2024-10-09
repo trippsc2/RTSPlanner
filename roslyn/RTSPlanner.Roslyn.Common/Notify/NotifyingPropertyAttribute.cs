@@ -1,6 +1,6 @@
 using System;
 
-namespace RTSPlanner.Notify;
+namespace RTSPlanner.Roslyn.Common.Notify;
 
 /// <summary>
 /// An attribute that marks a field as a property that should notify listeners of changes.

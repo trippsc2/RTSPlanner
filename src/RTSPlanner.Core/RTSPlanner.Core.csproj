@@ -19,10 +19,10 @@
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\..\roslyn\RTSPlanner.Notify\RTSPlanner.Notify.csproj"
+    <ProjectReference Include="..\..\roslyn\RTSPlanner.Roslyn.Common\RTSPlanner.Roslyn.Common.csproj"
                       OutputItemType="Analyzer" 
                       ReferenceOutputAssembly="true" />
-    <ProjectReference Include="..\..\roslyn\RTSPlanner.Notify.Roslyn\RTSPlanner.Notify.Roslyn.csproj"
+    <ProjectReference Include="..\..\roslyn\RTSPlanner.Roslyn\RTSPlanner.Roslyn.csproj"
                       OutputItemType="Analyzer"
                       ReferenceOutputAssembly="false" />
   </ItemGroup>

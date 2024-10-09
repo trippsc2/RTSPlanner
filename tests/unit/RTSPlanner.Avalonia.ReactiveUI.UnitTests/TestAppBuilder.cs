@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Avalonia;
 using Avalonia.Headless;
 using RTSPlanner.Avalonia.ReactiveUI.UnitTests;
@@ -7,6 +8,7 @@ using RTSPlanner.Avalonia.ReactiveUI.UnitTests;
 
 namespace RTSPlanner.Avalonia.ReactiveUI.UnitTests;
 
+[ExcludeFromCodeCoverage]
 public sealed class TestAppBuilder
 {
     public static AppBuilder BuildAvaloniaApp()

@@ -1,4 +1,4 @@
-namespace RTSPlanner.Notify;
+namespace RTSPlanner.Roslyn.Common.Notify;
 
 /// <summary>
 /// Specifies the access modifier of a property getter or setter.

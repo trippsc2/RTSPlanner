@@ -1,5 +1,5 @@
 using System;
-using RTSPlanner.Notify;
+using RTSPlanner.Roslyn.Common.Notify;
 
 namespace RTSPlanner.Core.Resources;
 

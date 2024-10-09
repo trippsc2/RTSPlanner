@@ -2,7 +2,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace RTSPlanner.Notify.Roslyn.Syntactic;
+namespace RTSPlanner.Roslyn.Syntactic;
 
 /// <summary>
 /// Extends <see cref="TypeDeclarationSyntax"/> with additional methods.

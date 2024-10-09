@@ -1,10 +1,11 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.Testing;
-using RTSPlanner.Notify.Roslyn;
+using RTSPlanner.Roslyn.Common.Notify;
+using RTSPlanner.Roslyn.Notify;
 using Xunit;
 
-namespace RTSPlanner.Notify.UnitTests;
+namespace RTSPlanner.Roslyn.UnitTests.Notify;
 
 [ExcludeFromCodeCoverage]
 public sealed class NotifyAnalyzerTests
@@ -15,7 +16,7 @@ public sealed class NotifyAnalyzerTests
         // lang=cs
         const string source =
             """
-            using RTSPlanner.Notify;
+            using RTSPlanner.Roslyn.Common.Notify;
             
             namespace TestProject;
             
@@ -36,7 +37,7 @@ public sealed class NotifyAnalyzerTests
         // lang=cs
         const string source =
             """
-            using RTSPlanner.Notify;
+            using RTSPlanner.Roslyn.Common.Notify;
 
             namespace TestProject;
 
@@ -56,7 +57,7 @@ public sealed class NotifyAnalyzerTests
         // lang=cs
         const string source =
             """
-            using RTSPlanner.Notify;
+            using RTSPlanner.Roslyn.Common.Notify;
 
             namespace TestProject;
 
@@ -80,7 +81,7 @@ public sealed class NotifyAnalyzerTests
         // lang=cs
         const string source =
             """
-            using RTSPlanner.Notify;
+            using RTSPlanner.Roslyn.Common.Notify;
 
             namespace TestProject;
 
@@ -101,7 +102,7 @@ public sealed class NotifyAnalyzerTests
         // lang=cs
         const string source =
             """
-            using RTSPlanner.Notify;
+            using RTSPlanner.Roslyn.Common.Notify;
 
             namespace TestProject;
 
@@ -140,7 +141,7 @@ public sealed class NotifyAnalyzerTests
         // lang=cs
         var source =
             $$"""
-              using RTSPlanner.Notify;
+              using RTSPlanner.Roslyn.Common.Notify;
 
               namespace TestProject;
 
@@ -191,7 +192,7 @@ public sealed class NotifyAnalyzerTests
         // lang=cs
         var source =
             $$"""
-              using RTSPlanner.Notify;
+              using RTSPlanner.Roslyn.Common.Notify;
 
               namespace TestProject;
 
@@ -214,7 +215,7 @@ public sealed class NotifyAnalyzerTests
         // lang=cs
         const string source =
             """
-            using RTSPlanner.Notify;
+            using RTSPlanner.Roslyn.Common.Notify;
 
             namespace TestProject;
 

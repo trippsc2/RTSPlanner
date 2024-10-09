@@ -2,10 +2,12 @@ using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using RTSPlanner.Notify.Roslyn.Semantic;
-using RTSPlanner.Notify.Roslyn.Syntactic;
+using RTSPlanner.Roslyn.Common.Notify;
+using RTSPlanner.Roslyn.Semantic;
+using RTSPlanner.Roslyn.Syntactic;
+using Accessibility = RTSPlanner.Roslyn.Common.Notify.Accessibility;
 
-namespace RTSPlanner.Notify.Roslyn;
+namespace RTSPlanner.Roslyn.Notify;
 
 /// <summary>
 /// Analyzes the use of the <see cref="NotifyingObjectAttribute"/> and <see cref="NotifyingPropertyAttribute"/>
@@ -22,7 +24,7 @@ public sealed class NotifyAnalyzer : DiagnosticAnalyzer
         "RTSPlannerNotify001",
         "NotifyingObjectAttribute cannot be used on a non-partial type.",
         "The class '{0}' is marked with the NotifyingObjectAttribute but is not a partial type.",
-        "RTSPlanner.Notify.Roslyn",
+        "RTSPlanner.Roslyn",
         DiagnosticSeverity.Error,
         true);
     
@@ -34,7 +36,7 @@ public sealed class NotifyAnalyzer : DiagnosticAnalyzer
         "RTSPlannerNotify002",
         "NotifyingObjectAttribute cannot be used on a static type.",
         "The class '{0}' is marked with the NotifyingObjectAttribute but is a static type.",
-        "RTSPlanner.Notify.Roslyn",
+        "RTSPlanner.Roslyn",
         DiagnosticSeverity.Error,
         true);
 
@@ -46,7 +48,7 @@ public sealed class NotifyAnalyzer : DiagnosticAnalyzer
         "RTSPlannerNotify003",
         "NotifyingPropertyAttribute cannot be used outside of a class marked with NotifyingObjectAttribute.",
         "The field '{0}' is marked with the NotifyingPropertyAttribute but is not a member of a class marked with NotifyingObjectAttribute. The property will not be generated.",
-        "RTSPlanner.Notify.Roslyn",
+        "RTSPlanner.Roslyn",
         DiagnosticSeverity.Warning,
         true);
     
@@ -59,7 +61,7 @@ public sealed class NotifyAnalyzer : DiagnosticAnalyzer
         "RTSPlannerNotify004",
         "The SetterAccessibility of the field marked with NotifyingPropertyAttribute cannot be less accessible than the GetterAccessibility.",
         "The SetterAccessibility of the field '{0}' is less accessible than the GetterAccessibility.",
-        "RTSPlanner.Notify.Roslyn",
+        "RTSPlanner.Roslyn",
         DiagnosticSeverity.Error,
         true);
     
@@ -71,7 +73,7 @@ public sealed class NotifyAnalyzer : DiagnosticAnalyzer
         "RTSPlannerNotify005",
         "The field marked with NotifyingPropertyAttribute must start with an underscore.",
         "The field '{0}' marked with NotifyingPropertyAttribute must start with an underscore.",
-        "RTSPlanner.Notify.Roslyn",
+        "RTSPlanner.Roslyn",
         DiagnosticSeverity.Error,
         true);
     

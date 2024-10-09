@@ -1,6 +1,6 @@
 using System;
 using System.ComponentModel;
-using RTSPlanner.Notify;
+using RTSPlanner.Roslyn.Common.Notify;
 
 namespace RTSPlanner.Core.Resources;
 

@@ -1,7 +1,7 @@
 using System.Linq;
 using Microsoft.CodeAnalysis;
 
-namespace RTSPlanner.Notify.Roslyn.Semantic;
+namespace RTSPlanner.Roslyn.Semantic;
 
 /// <summary>
 /// Extends <see cref="AttributeData"/> with additional methods.
