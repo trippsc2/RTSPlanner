@@ -47,6 +47,7 @@ public sealed class NotifyGenerator : IIncrementalGenerator
 
         namespace RTSPlanner.Roslyn.Notify;
 
+        [global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute]
         [global::System.AttributeUsage(global::System.AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
         internal sealed class NotifyingObjectAttribute : global::System.Attribute;
         """;
@@ -84,6 +85,7 @@ public sealed class NotifyGenerator : IIncrementalGenerator
 
         namespace RTSPlanner.Roslyn.Notify;
 
+        [global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute]
         [global::System.AttributeUsage(global::System.AttributeTargets.Field, Inherited = false, AllowMultiple = false)]
         internal sealed class NotifyingPropertyAttribute : global::System.Attribute
         {
@@ -258,6 +260,7 @@ public sealed class NotifyGenerator : IIncrementalGenerator
               
               partial class {{classInfo.ClassName}} : global::System.ComponentModel.INotifyPropertyChanged
               {
+                  [global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute]
                   public event global::System.ComponentModel.PropertyChangedEventHandler? PropertyChanged;
               
               """;
@@ -299,6 +302,7 @@ public sealed class NotifyGenerator : IIncrementalGenerator
         // lang=cs
         return $$"""
                      
+                     [global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute]
                      {{property.PropertyAccessibilityKeywords}} {{property.TypeName}} {{property.PropertyName}}
                      {
                          get => {{property.FieldName}};
